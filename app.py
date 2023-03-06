@@ -7,7 +7,7 @@ st.set_page_config(
     layout="wide"
 )
 
-df=pd.read_excel("data.xlsx",index_col=0)
+df=pd.read_excel("Schemes-Dashboard/Data.xlsx",index_col=0)
 df=df.drop("Remark",axis=1)
 
 
