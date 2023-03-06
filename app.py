@@ -7,7 +7,7 @@ st.set_page_config(
     layout="wide"
 )
 
-df=pd.read_excel("https://github.com/Akashpatel1122/Schemes-Dashboard/raw/64d0577b3190fdedddddd9d2b56fb3ba08bb1829/Data.xlsx", index_col=0, engine='openpyxl')
+df=pd.read_excel("data.xlsx",index_col=0)
 df=df.drop("Remark",axis=1)
 
 
@@ -61,36 +61,112 @@ def header(metric_value):
     return container
 
 cards=header(metric_value)
-
+new_df=df.copy()
 # Create the dropdowns with default values
 options1 = df['Vidhansabha'].unique().tolist()
 options1.insert(0,"All")
 choice1 = st.sidebar.selectbox('Select Vidhansabha', options1, index=0)
 
 options2 = df["Block"].unique().tolist()
-options2.insert(0,"All")
-choice2 = st.sidebar.selectbox('Select Block', options2, index=0)
+if choice1 != "All":
+    df = df[df['Vidhansabha'] == choice1]
+    options2 = df["Block"].unique().tolist()
 
+options2.insert(0, "All")
+choice2 = st.sidebar.selectbox('Select Block', options2, index=0)
 options3 = df["Sector"].unique().tolist()
-options3.insert(0,"All")
+if choice1 != "All" and choice2 != "All":
+    df = df[(df['Vidhansabha'] == choice1) & (df["Block"] == choice2)]
+    options3 = df["Sector"].unique().tolist()
+elif choice1 != "All" and choice2 == "All":
+    df = df[df['Vidhansabha'] == choice1]
+    options3 = df["Sector"].unique().tolist()
+elif choice1 == "All" and choice2 != "All":
+    df = df[df['Block'] == choice2]
+    options3 = df["Sector"].unique().tolist()
+
+options3.insert(0, "All")
 choice3 = st.sidebar.selectbox('Select Sector', options3, index=0)
 
 options4 = df["Village Name"].unique().tolist()
-options4.insert(0,"All")
+if choice1 != "All" and choice2 != "All" and choice3 != "All":
+    df = df[(df['Vidhansabha'] == choice1) & (df["Block"] == choice2) & (df["Sector"] == choice3)]
+    options4 = df["Village Name"].unique().tolist()
+elif choice1 != "All" and choice2 != "All" and choice3 == "All":
+    df = df[(df['Vidhansabha'] == choice1) & (df["Block"] == choice2)]
+    options4 = df["Village Name"].unique().tolist()
+elif choice1 != "All" and choice2 == "All" and choice3 == "All":
+    df = df[df['Vidhansabha'] == choice1]
+    options4 = df["Village Name"].unique().tolist()
+elif choice1 == "All" and choice2 == "All" and choice3 == "All":
+    options4 = df["Village Name"].unique().tolist()
+options4.insert(0, "All")
 choice4 = st.sidebar.selectbox('Select Booth/Village', options4, index=0)
 
 options5 = df["Scheme"].unique().tolist()
-options5.insert(0,"All")
+if choice1 != "All" and choice2 != "All" and choice3 != "All" and choice4 != "All":
+    df = df[(df['Vidhansabha'] == choice1) & (df["Block"] == choice2) & (df["Sector"] == choice3) & (df["Village Name"] == choice4)]
+    options5 = df["Scheme"].unique().tolist()
+elif choice1 != "All" and choice2 != "All" and choice3 != "All" and choice4 == "All":
+    df = df[(df['Vidhansabha'] == choice1) & (df["Block"] == choice2) & (df["Sector"] == choice3)]
+    options5 = df["Scheme"].unique().tolist()
+elif choice1 != "All" and choice2 != "All" and choice3 == "All" and choice4 == "All":
+    df = df[(df['Vidhansabha'] == choice1) & (df["Block"] == choice2)]
+    options5 = df["Scheme"].unique().tolist()
+elif choice1 != "All" and choice2 == "All" and choice3 == "All" and choice4 == "All":
+    df = df[df['Vidhansabha'] == choice1]
+    options5 = df["Scheme"].unique().tolist()
+elif choice1 == "All" and choice2 == "All" and choice3 == "All" and choice4 == "All":
+    options5 = df["Scheme"].unique().tolist()
+options5.insert(0, "All")
 choice5 = st.sidebar.selectbox('Select Scheme', options5, index=0)
 
 options6 = df["Department"].unique().tolist()
-options6.insert(0,"All")
+if choice1 != "All" and choice2 != "All" and choice3 != "All" and choice4 != "All" and choice5 != "All":
+    df = df[(df['Vidhansabha'] == choice1) & (df["Block"] == choice2) & (df["Sector"] == choice3) & (df["Village Name"] == choice4) & (df["Scheme"] == choice5)]
+    options6 = df["Department"].unique().tolist()
+elif choice1 != "All" and choice2 != "All" and choice3 != "All" and choice4 != "All" and choice5 == "All":
+    df = df[(df['Vidhansabha'] == choice1) & (df["Block"] == choice2) & (df["Sector"] == choice3) & (df["Village Name"] == choice4)]
+    options6 = df["Department"].unique().tolist()
+elif choice1 != "All" and choice2 != "All" and choice3 != "All" and choice4 == "All" and choice5 == "All":
+    df = df[(df['Vidhansabha'] == choice1) & (df["Block"] == choice2) & (df["Sector"] == choice3)]
+    options6 = df["Department"].unique().tolist()
+elif choice1 != "All" and choice2 != "All" and choice3 == "All" and choice4 == "All" and choice5 == "All":
+    df = df[(df['Vidhansabha'] == choice1) & (df["Block"] == choice2)]
+    options6 = df["Department"].unique().tolist()
+elif choice1 != "All" and choice2 == "All" and choice3 == "All" and choice4 == "All" and choice5 == "All":
+    df = df[df['Vidhansabha'] == choice1]
+    options6 = df["Department"].unique().tolist()
+elif choice1 == "All" and choice2=="All" and choice3=="All" and choice4=="All" and choice5=="All":
+    options6 = df["Department"].unique().tolist()
+options6.insert(0, "All")
 choice6 = st.sidebar.selectbox('Select Department', options6, index=0)
 
 options7 = df["Approval Year"].unique().tolist()
-options7.insert(0,"All")
+if choice1 != "All" and choice2 != "All" and choice3 != "All" and choice4 != "All" and choice5 != "All" and choice6 != "All":
+    df = df[(df['Vidhansabha'] == choice1) & (df["Block"] == choice2) & (df["Sector"] == choice3) & (df["Village Name"] == choice4) & (df["Scheme"] == choice5) & (df["Department"] == choice6)]
+    options7 = df["Approval Year"].unique().tolist()
+elif choice1 != "All" and choice2 != "All" and choice3 != "All" and choice4 != "All" and choice5 == "All" and choice6 == "All":
+    df = df[(df['Vidhansabha'] == choice1) & (df["Block"] == choice2) & (df["Sector"] == choice3) & (df["Village Name"] == choice4)]
+    options7 = df["Approval Year"].unique().tolist()
+elif choice1 != "All" and choice2 != "All" and choice3 != "All" and choice4 == "All" and choice5 == "All" and choice6 == "All":
+    df = df[(df['Vidhansabha'] == choice1) & (df["Block"] == choice2) & (df["Sector"] == choice3)]
+    options7 = df["Approval Year"].unique().tolist()
+elif choice1 != "All" and choice2 != "All" and choice3 == "All" and choice4 == "All" and choice5 == "All" and choice6 == "All":
+    df = df[(df['Vidhansabha'] == choice1) & (df["Block"] == choice2)]
+    options7 = df["Approval Year"].unique().tolist()
+elif choice1 != "All" and choice2 == "All" and choice3 == "All" and choice4 == "All" and choice5 == "All" and choice6 == "All":
+    df = df[df['Vidhansabha'] == choice1]
+    options7 = df["Approval Year"].unique().tolist()
+elif choice1 == "All" and choice2=="All" and choice3=="All" and choice4=="All" and choice5=="All" and choice6=="All":
+    options7 = df["Approval Year"].unique().tolist()
+options7.insert(0, "All")
 choice7 = st.sidebar.selectbox('Select Approval Year', options7, index=0)
 
+
+
+
+# Filter the data based on selected options
 filter_button=st.sidebar.button("Filter Data")
 
 if filter_button:
@@ -122,5 +198,5 @@ if filter_button:
         """, unsafe_allow_html=True)
 
 else:
-    st.dataframe(df,use_container_width=True)
+    st.dataframe(new_df,use_container_width=True)
 
