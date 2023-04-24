@@ -7,7 +7,7 @@ st.set_page_config(
     layout="wide"
 )
 
-df=pd.read_excel("https://github.com/Akashpatel1122/Schemes-Dashboard/blob/5e63bb5b08a6a575163b7c5c3fb69ec9794bb413/Data%20-%20Copy.xlsx",engine="openpyxl",index_col=0)
+df=pd.read_excel("https://github.com/Akashpatel1122/Schemes-Dashboard/blob/c594cdc7cc8fde694b9296bcbfc10d827d0ef9d1/Data.xlsx",engine="openpyxl",index_col=0)
 df=df.drop("Remark",axis=1)
 
 
